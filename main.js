@@ -1,17 +1,24 @@
 const prompt = require("prompt-sync")({ sigint: true });
 const md5 = require('js-md5');
 const SHA256 = require("js-sha256")
+const SHA224 = require("js-sha256")
 const fs = require("fs");
 
 const OutputFile = "HashedOutput.txt";
 
-let algorithm = prompt("Select algorithm (md5 or SHA-256): ")
+let algorithm = prompt("Select algorithm (md5, SHA-256 or SHA-224): ").toString().toLowerCase()
 
 function selectAlgorithm(algorithm) {
-    if (algorithm.toString() == "md5") {
+    if (algorithm == "md5") {
         md5Hasher()
-    } else {
+    } if (algorithm == "sha-256" || algorithm == "sha256") {
         SHA256Hasher()
+    } if (algorithm == "sha-224" || algorithm == "sha224") {
+        SHA224Hasher()
+    } if (algorithm !== "sha256" && algorithm !== "sha-256" && algorithm !== "sha224" && algorithm !== "sha-224" && algorithm !== "md5") {
+        console.log("Please choose a valid algorithm");
+        algorithm = prompt("Select algorithm (md5, SHA-256 or SHA-224): ").toLowerCase();
+        selectAlgorithm(algorithm);
     }
 }
 
@@ -24,7 +31,7 @@ function md5Hasher() {
         if (err) {
             console.log(err);
         } else {
-            console.log("Successfully Hashed Data");
+            console.log("Successfully Hashed Input");
         }
     });
 }
@@ -38,7 +45,21 @@ function SHA256Hasher() {
         if (err) {
             console.log(err);
         } else {
-            console.log("Successfully Hashed Data");
+            console.log("Successfully Hashed Input");
+        }
+    });
+}
+
+function SHA224Hasher() {
+    let input = prompt("Message/Data to hash using SHA-224: ");
+    let hashed = SHA224(input);
+    console.log("Wrote: " + hashed + `, to file: ${OutputFile}`);
+
+    fs.writeFileSync(`${OutputFile}`, hashed, "utf8", (err) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Successfully Hashed Input");
         }
     });
 }
