@@ -1,7 +1,7 @@
 const prompt = require("prompt-sync")({ sigint: true });
 const md5 = require('js-md5');
-const SHA256 = require("js-sha256")
-const SHA224 = require("js-sha256")
+const SHA256 = require("js-sha256").sha256
+const SHA224 = require("js-sha256").sha224
 const fs = require("fs");
 
 const OutputFile = "HashedOutput.txt";
@@ -17,7 +17,7 @@ function selectAlgorithm(algorithm) {
         SHA224Hasher()
     } if (algorithm !== "sha256" && algorithm !== "sha-256" && algorithm !== "sha224" && algorithm !== "sha-224" && algorithm !== "md5") {
         console.log("Please choose a valid algorithm");
-        algorithm = prompt("Select algorithm (md5, SHA-256 or SHA-224): ").toLowerCase();
+        algorithm = prompt("Select algorithm (md5, SHA-256 or SHA-224): ").toString().toLowerCase();
         selectAlgorithm(algorithm);
     }
 }
